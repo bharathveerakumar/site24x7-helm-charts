@@ -24,6 +24,9 @@ spec:
         imagePullPolicy: {{ .pullPolicy }}
       {{- end }}
         name: {{ include "site24x7ClusterAgent.name" . }}
+        {{- if .Values.site24x7clusterAgent.applyPriorityClass }}
+        priorityClassName: {{ include "site24x7ClusterAgent.name" . }}
+        {{- end }}
         env:
           - name: NODE_IP
             valueFrom:

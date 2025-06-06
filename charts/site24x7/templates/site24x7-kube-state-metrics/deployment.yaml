@@ -6,7 +6,7 @@ metadata:
     {{- include "site24x7KubeStateMetrics.labels" . | nindent 4 }}
   name: {{ include "site24x7KubeStateMetrics.name" . }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.site24x7KubeStateMetrics.replicas }}
   selector:
     matchLabels:
       {{- include "site24x7.selectorLabels" . | nindent 6 }}
@@ -25,6 +25,9 @@ spec:
         imagePullPolicy: {{ .pullPolicy }}
       {{- end }}
         name: {{ include "site24x7KubeStateMetrics.name" . }}
+        {{- if .Values.site24x7KubeStateMetrics.applyPriorityClass }}
+        priorityClassName: {{ include "site24x7KubeStateMetrics.name" . }}
+        {{- end }}
         livenessProbe:
           httpGet:
             path: /healthz

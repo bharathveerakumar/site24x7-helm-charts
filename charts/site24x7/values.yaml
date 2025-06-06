@@ -2,18 +2,21 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
-
+# names used for site24x7 resources
 nameOverride: "site24x7"
 fullnameOverride: "site24x7"
 
+# site24x7 device key
 deviceKey: "apiKey"
 
+# Cluster distributions
 openShift: false
 gkeAutopilot: false
 
-priorityClassName: ""
-# ConfigMap used for storing the site24x7 agent settings & configurations
+# associate Existing priorityClass to the site24x7 pods
+associateExistingPriorityClass: ""
+
+# configMap used for storing the site24x7 settings & configurations
 createConfigMap: true
 
 # proxy settings for site24x7-agent & site24x7-cluster-agent
@@ -22,20 +25,27 @@ https_proxy: ""
 
 site24x7Agent:
   create: true
+
   # daemonset and pod annotations
   annotations: {}
+
   # updateStrategy for daemonset
   updateStrategy: {}
+
   # nodeSelector for daemonset pods
   nodeSelector: {}
+
   # list of tolerations to add to the daemonset pods
   tolerations: []
+
   # securityContext to be applied to the daemonset containers
   securityContext: {}
+
   # if not securityContext is provided, the appropriate context to be added to the daemonset containers based runAsNonRoot: true/false
-  applyapplyNonRootSecurityContext: true
-  # applying control plane nodes default toleration
-  applyDefaultToleration: false
+  applyNonRootSecurityContext: false
+
+  # applying toleration which tolerates any taints
+  applyDefaultToleration: true
 
   # daemonset container details
   image:
@@ -48,29 +58,46 @@ site24x7Agent:
 
   # site24x7-agent container resources
   resources:
-    limits:
-      cpu: 200m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 256Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
 
   # extraEnv to be added to the site24x7-agent container
   extraEnv: []
+
+  # apply the site24x7-agent priorityClass to the daemonset pods
+  applyPriorityClass: true
+
+  # site24x7-agent priorityClass value
+  priorityClassValue: 12000000
   
 site24x7KubeStateMetrics:
   # kube-state-metrics enable/disable
   create: true
+
   # deployment and pod annotations
   annotations: {}
+
   # updateStrategy for deployment
   updateStrategy: {}
+
   # nodeSelector for deployment pods
   nodeSelector: {}
+
   # list of tolerations to add to the deployment pods
   tolerations: []
+
   # securityContext to be applied to the deployment contaiers
   securityContext: {}
+
+  # replicas count of site24x7-kube-state-metrics deployment
+  replicas: 1
+
+  # applying toleration which tolerates any taints
+  applyDefaultToleration: false
 
   # deployment container details
   image:
@@ -83,28 +110,43 @@ site24x7KubeStateMetrics:
   
   # site24x7-agent container resources
   resources:
+    requests:
+      cpu: 10m
+      memory: 100Mi
     limits:
       cpu: 200m
-      memory: 512Mi
-    requests:
-      cpu: 100m
       memory: 256Mi
+  
+  # apply the site24x7-kube-state-metrics priorityClass to the daemonset pods
+  applyPriorityClass: true
+
+  # site24x7-kube-state-metrics priorityClass value
+  priorityClassValue: 12000000
   
 site24x7ClusterAgent:
   # kube-state-metrics enable/disable
   create: true
+
   # replicas
   replicas: 1
+
   # deployment and pod annotations
   annotations: {}
+
   # updateStrategy for deployment
   updateStrategy: {}
+
   # nodeSelector for deployment pods
   nodeSelector: {}
+  
   # list of tolerations to add to the deployment pods
   tolerations: []
+
   # securityContext to be applied to the deployment contaiers
   securityContext: {}
+
+  # applying toleration which tolerates any taints
+  applyDefaultToleration: false
 
   # deployment container details
   image:
@@ -117,15 +159,21 @@ site24x7ClusterAgent:
   
   # site24x7-agent container resources
   resources:
-    limits:
-      cpu: 200m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 800Mi
   
   # extraEnv to be added to the site24x7-agent container
   extraEnv: []
+
+  # apply the site24x7-cluster-agent priorityClass to the daemonset pods
+  applyPriorityClass: true
+
+  # site24x7-cluster-agent priorityClass value
+  priorityClassValue: 12000000
 
 serviceAccount:
   create: true

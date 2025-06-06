@@ -34,7 +34,10 @@ spec:
       - image: {{ .repository | default "site24x7" }}/{{ .name | default "docker-agent" }}:{{ .tag }}
         imagePullPolicy: {{ .pullPolicy }}
       {{- end }}
-        name: site24x7-agent
+        name: {{ include "site24x7Agent.name" . }}
+        {{- if .Values.site24x7Agent.applyPriorityClass }}
+        priorityClassName: {{ include "site24x7Agent.name" . }}
+        {{- end }}
         securityContext:
         {{- include "site24x7Agent.securityContext" . | indent 10 }}
         {{- if .Values.site24x7Agent.resources }}
