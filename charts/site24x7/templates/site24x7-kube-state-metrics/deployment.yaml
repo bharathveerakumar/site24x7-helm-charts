@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   labels:
     {{- include "site24x7KubeStateMetrics.labels" . | nindent 4 }}
-  name: {{ include "site24x7.fullname" . }}-kube-state-metrics
+  name: {{ include "site24x7KubeStateMetrics.name" . }}
 spec:
   replicas: 1
   selector:
@@ -14,27 +14,27 @@ spec:
     metadata:
       labels:
         {{- include "site24x7KubeStateMetrics.labels" . | nindent 8 }}
-        app: site24x7-kube-state-metrics
+        app: {{ include "site24x7KubeStateMetrics.name" . }}
     spec:
       tolerations:
         {{- toYaml .Values.site24x7KubeStateMetrics.tolerations | nindent 8 }}
       automountServiceAccountToken: true
       containers:
-        {{- with .Values.site24x7KubeStateMetrics.image }}
+      {{- with .Values.site24x7KubeStateMetrics.image }}
       - image: {{ .repository | default "site24x7" }}/{{ .repository | default "site24x7" }}:{{ .tag }}
         imagePullPolicy: {{ .pullPolicy }}
-        {{- end }}
-        name: site24x7-kube-state-metrics
+      {{- end }}
+        name: {{ include "site24x7KubeStateMetrics.name" . }}
         livenessProbe:
           httpGet:
-              path: /healthz
-              port: 8080
+            path: /healthz
+            port: 8080
           initialDelaySeconds: 5
           timeoutSeconds: 5
         readinessProbe:
           httpGet:
-              path: /
-              port: 8081
+            path: /
+            port: 8081
           initialDelaySeconds: 5
           timeoutSeconds: 5
         ports:
@@ -42,21 +42,17 @@ spec:
           name: http-metrics
         - containerPort: 8081
           name: telemetry
+        {{- if .Values.site24x7KubeStateMetrics.resources }}
+        resources:
+        {{- toYaml .Values.site24x7KubeStateMetrics.resources | nindent 10 }}
+        {{- end }}
         securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          runAsUser: 1001080000
-          seccompProfile:
-            type: RuntimeDefault
+          {{- include "site24x7KubeStateMetrics.securityContext" . | indent 10 }}
       nodeSelector:
         {{- if not (empty .Values.site24x7KubeStateMetrics.nodeSelector) }}
         {{- toYaml .Values.site24x7KubeStateMetrics.nodeSelector | nindent 8 }}
         {{- else }}
         kubernetes.io/os: linux
         {{- end }}
-      serviceAccountName: {{ include "site24x7.fullname" . }}-kube-state-metrics
+      serviceAccountName: {{ include "site24x7KubeStateMetrics.name" . }}
 {{- end }}

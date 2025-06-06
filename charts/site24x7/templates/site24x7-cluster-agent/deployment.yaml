@@ -19,9 +19,11 @@ spec:
     spec:
       serviceAccountName: {{ include "site24x7.fullname" . }}
       containers:
-      - image: site24x7/docker-agent:cluster_agent_nonroot
-        imagePullPolicy: Always
-        name: site24x7-cluster-agent
+      {{- with .Values.site24x7ClusterAgent.image }}
+      - image: {{ .repository | default "site24x7" }}/{{ .name | default "docker-agent" }}:{{ .tag | default "cluster_agent_nonroot" }}
+        imagePullPolicy: {{ .pullPolicy }}
+      {{- end }}
+        name: {{ include "site24x7ClusterAgent.name" . }}
         env:
           - name: NODE_IP
             valueFrom:
@@ -39,6 +41,9 @@ spec:
           - name: https_proxy
             value: {{ .Values.https_proxy }}
           {{- end }}
+          {{- if .Values.site24x7ClusterAgent.extraEnv }}
+          {{- toYaml .Values.site24x7ClusterAgent.extraEnv | nindent 10 }}
+          {{- end }}
         ports:
           - containerPort: 5000
             name: http-metrics
@@ -46,15 +51,12 @@ spec:
         securityContext:
           {{- include "site24x7.nonRootScc" . | indent 10 }}
         volumeMounts:
-          - name: site24x7-cluster-agent
-            mountPath: /home/site24x7/monagent
+          - name: {{ include "site24x7ClusterAgent.name" . }}
+            mountPath: /home/{{ include "site24x7.fullname" . }}/monagent
+        {{- if .Values.site24x7ClusterAgent.resources }}
         resources:
-          requests:
-            memory: "50Mi"
-            cpu: "50m"
-          limits:
-            memory: "450Mi"
-            cpu: "400m"
+        {{- toYaml .Values.site24x7ClusterAgent.resources | nindent 10 }}
+        {{- end }}
         livenessProbe:
           httpGet:
             path: /ca/health_check
@@ -73,5 +75,5 @@ spec:
           timeoutSeconds: 10
       volumes:
       - emptyDir: {}
-        name: site24x7-cluster-agent
+        name: {{ include "site24x7ClusterAgent.name" . }}
 {{ end }}

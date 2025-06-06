@@ -1,4 +1,4 @@
-{{- if and .Values.openShift (not .Values.site24x7Agent.nonRootSecurityContext) }}
+{{- if and .Values.openShift (not .Values.site24x7Agent.applyNonRootSecurityContext) }}
 allowHostDirVolumePlugin: true
 allowHostIPC: false
 allowHostNetwork: false
@@ -14,7 +14,7 @@ fsGroup:
   type: MustRunAs
 kind: SecurityContextConstraints
 metadata:
-  name: site24x7
+  name: {{ include "site24x7.fullname" . }}
 priority: null
 readOnlyRootFilesystem: false
 seccompProfiles:

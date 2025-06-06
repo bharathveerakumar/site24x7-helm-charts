@@ -67,33 +67,3 @@ Node Selector labels
 kubernetes.io/os: linux
 {{- end }}
 {{- end }}
-
-{{/*
-site24x7Agent labels
-*/}}
-{{- define "site24x7Agent.labels" -}}
-{{ include "site24x7.labels" . }}
-app.kubernetes.io/instance: site24x7-agent
-app.kubernetes.io/component: agent
-app.kubernetes.io/version: 20.0.0
-{{- end }}
-
-{{/*
-site24x7KubeStateMetrics labels
-*/}}
-{{- define "site24x7KubeStateMetrics.labels" -}}
-{{ include "site24x7.labels" . }}
-app.kubernetes.io/instance: site24x7-kube-state-metrics
-app.kubernetes.io/component: exporter
-app.kubernetes.io/version: 2.9.2
-{{- end }}
-
-{{/*
-site24x7ClusterAgent labels
-*/}}
-{{- define "site24x7ClusterAgent.labels" -}}
-{{ include "site24x7.labels" . }}
-app.kubernetes.io/instance: site24x7-cluster-agent
-app.kubernetes.io/component: agent
-app.kubernetes.io/version: 1.0.0
-{{- end }}

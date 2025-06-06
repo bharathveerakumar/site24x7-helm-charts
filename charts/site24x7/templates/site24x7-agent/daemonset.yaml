@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: {{ include "site24x7.fullname" . }}-agent
+  name: {{ include "site24x7Agent.name" . }}
   labels:
     {{- include "site24x7Agent.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
-      {{- include "site24x7.selectorLabels" . | nindent 4 }}
+      {{- include "site24x7.selectorLabels" . | nindent 6 }}
   updateStrategy:
     {{- if not (empty .Values.site24x7Agent.updateStrategy) }}
     {{- toYaml .Values.site24x7Agent.updateStrategy | nindent 4 }}
@@ -18,37 +18,34 @@ spec:
     metadata:
       labels:      
         {{- include "site24x7Agent.labels" . | nindent 8 }}
-      name: {{ include "site24x7.fullname" . }}-agent
+      name: {{ include "site24x7Agent.name" . }}
     spec:
       serviceAccountName: {{ include "site24x7.fullname" . }}          
       nodeSelector:
-        {{- if not (empty .Values.site24x7Agent.nodeSelector) -}}
+        {{- if not (empty .Values.site24x7Agent.nodeSelector) }}
         {{- .Values.site24x7Agent.nodeSelector }}
-        {{- else -}}
+        {{- else }}
         kubernetes.io/os: linux
         {{- end }}
       tolerations:
         {{- toYaml .Values.site24x7Agent.tolerations | nindent 8 }}
       containers:
       {{- with .Values.site24x7Agent.image }}
-      - image: {{ .repository | default "site24x7" }}/{{ .repository | default "site24x7" }}:{{ .tag }}
+      - image: {{ .repository | default "site24x7" }}/{{ .name | default "docker-agent" }}:{{ .tag }}
         imagePullPolicy: {{ .pullPolicy }}
       {{- end }}
         name: site24x7-agent
         securityContext:
-        {{- include "site24x7.nodeAgentScc" . | indent 12 }}
+        {{- include "site24x7Agent.securityContext" . | indent 10 }}
+        {{- if .Values.site24x7Agent.resources }}
         resources:
-          requests:
-            memory: {{ .Values.site24x7Agent.resources.requests.memory | default "50Mi" }}
-            cpu: {{ .Values.site24x7Agent.resources.requests.cpu | default "50m" }}
-          limits:
-            memory: {{ .Values.site24x7Agent.resources.limits.memory | default "450Mi" }}
-            cpu: {{ .Values.site24x7Agent.resources.limits.cpu | default "400m" }}
+        {{- toYaml .Values.site24x7Agent.resources | nindent 10 }}
+        {{- end }}
         env:
           - name: KEY
             valueFrom:
               secretKeyRef:
-                name: "{{ include "site24x7.fullname" . }}-agent"
+                name: "{{ include "site24x7Agent.name" . }}"
                 key: KEY
           - name: installer
             value: kubernetes
@@ -64,7 +61,7 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
-          {{- if and .Values.site24x7Agent.nonRootSecurityContext .Values.openShift }}
+          {{- if and .Values.site24x7Agent.applyNonRootSecurityContext .Values.openShift }}
           - name: SERVERLESS
             value: true
           {{- end }}
@@ -79,13 +76,13 @@ spec:
           {{- end }}
         volumeMounts:
           - name: clusterconfig
-            mountPath: /etc/site24x7/clusterconfig
+            mountPath: /etc/{{ include "site24x7.fullname" . }}/clusterconfig
             readOnly: true
-          {{- if .Values.site24x7Agent.nonRootSecurityContext }}
-          - name: site24x7-agent
-            mountPath: /opt/site24x7/
+          {{- if .Values.site24x7Agent.applyNonRootSecurityContext }}
+          - name: {{ include "site24x7Agent.name" . }}
+            mountPath: /opt/{{ include "site24x7.fullname" . }}/
           {{- end }}
-          {{- if not (and .Values.site24x7Agent.nonRootSecurityContext .Values.openShift) }}
+          {{- if not (and .Values.site24x7Agent.applyNonRootSecurityContext .Values.openShift) }}
           - name: procfs
             mountPath: /host/proc
             readOnly: true
@@ -100,16 +97,16 @@ spec:
             readOnly: true
           {{- end }}
       volumes:
-      {{- with .Values }}
         - configMap:
-            name: site24x7
+            name: {{ include "site24x7.fullname" . }}
             optional: true
           name: clusterconfig
-        {{- if .site24x7Agent.nonRootSecurityContext }}
+      {{- with .Values }}
+        {{- if .site24x7Agent.applyNonRootSecurityContext }}
         - emptyDir: {}
-          name: site24x7-agent
+          name: {{ include "site24x7Agent.name" . }}
         {{- end }}
-        {{- if not (and .site24x7Agent.nonRootSecurityContext .openShift) }}
+        {{- if not (and .site24x7Agent.applyNonRootSecurityContext .openShift) }}
         - hostPath:
             path: /proc
           name: procfs

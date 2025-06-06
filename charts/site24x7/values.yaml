@@ -33,7 +33,7 @@ site24x7Agent:
   # securityContext to be applied to the daemonset containers
   securityContext: {}
   # if not securityContext is provided, the appropriate context to be added to the daemonset containers based runAsNonRoot: true/false
-  nonRootSecurityContext: true
+  applyapplyNonRootSecurityContext: true
   # applying control plane nodes default toleration
   applyDefaultToleration: false
 
@@ -54,6 +54,9 @@ site24x7Agent:
     requests:
       cpu: 100m
       memory: 256Mi
+
+  # extraEnv to be added to the site24x7-agent container
+  extraEnv: []
   
 site24x7KubeStateMetrics:
   # kube-state-metrics enable/disable
@@ -120,6 +123,9 @@ site24x7ClusterAgent:
     requests:
       cpu: 100m
       memory: 256Mi
+  
+  # extraEnv to be added to the site24x7-agent container
+  extraEnv: []
 
 serviceAccount:
   create: true
