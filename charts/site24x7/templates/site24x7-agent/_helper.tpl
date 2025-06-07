@@ -25,11 +25,3 @@ app.kubernetes.io/instance: {{ include "site24x7Agent.name" . }}
 app.kubernetes.io/component: agent
 app.kubernetes.io/version: 20.0.0
 {{- end }}
-
-
-{{/*
-site24x7Agent priorityClassName
-*/}}
-{{- define "site24x7Agent.priorityClassName" -}}
-{{- if .Values.site24x7Agent. }}
-{{- end }}

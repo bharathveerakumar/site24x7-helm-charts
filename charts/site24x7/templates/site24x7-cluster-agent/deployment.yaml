@@ -24,7 +24,7 @@ spec:
         imagePullPolicy: {{ .pullPolicy }}
       {{- end }}
         name: {{ include "site24x7ClusterAgent.name" . }}
-        {{- if .Values.site24x7clusterAgent.applyPriorityClass }}
+        {{- if .Values.site24x7ClusterAgent.applyPriorityClass }}
         priorityClassName: {{ include "site24x7ClusterAgent.name" . }}
         {{- end }}
         env:
@@ -56,6 +56,9 @@ spec:
         volumeMounts:
           - name: {{ include "site24x7ClusterAgent.name" . }}
             mountPath: /home/{{ include "site24x7.fullname" . }}/monagent
+          - name: clusterconfig
+            mountPath: /etc/{{ include "site24x7.fullname" . }}/clusterconfig
+            readOnly: true
         {{- if .Values.site24x7ClusterAgent.resources }}
         resources:
         {{- toYaml .Values.site24x7ClusterAgent.resources | nindent 10 }}
@@ -77,6 +80,10 @@ spec:
           failureThreshold: 5
           timeoutSeconds: 10
       volumes:
+      - configMap:
+          name: {{ include "site24x7.fullname" . }}
+          optional: true
+        name: clusterconfig
       - emptyDir: {}
         name: {{ include "site24x7ClusterAgent.name" . }}
 {{ end }}

@@ -2,22 +2,16 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# names used for site24x7 resources
+# nameOverride - names used for site24x7 resources
 nameOverride: "site24x7"
 fullnameOverride: "site24x7"
 
-# site24x7 device key
+# deviceKey - site24x7 device key
 deviceKey: "apiKey"
 
 # Cluster distributions
 openShift: false
 gkeAutopilot: false
-
-# associate Existing priorityClass to the site24x7 pods
-associateExistingPriorityClass: ""
-
-# configMap used for storing the site24x7 settings & configurations
-createConfigMap: true
 
 # proxy settings for site24x7-agent & site24x7-cluster-agent
 http_proxy: ""
@@ -26,25 +20,25 @@ https_proxy: ""
 site24x7Agent:
   create: true
 
-  # daemonset and pod annotations
+  # site24x7Agent.annotations - daemonset and pod annotations
   annotations: {}
 
-  # updateStrategy for daemonset
+  # site24x7Agent.updateStrategy for daemonset
   updateStrategy: {}
 
-  # nodeSelector for daemonset pods
+  # site24x7Agent.nodeSelector for daemonset pods
   nodeSelector: {}
 
-  # list of tolerations to add to the daemonset pods
+  # site24x7Agent.tolerations - list of tolerations to add to the daemonset pods
   tolerations: []
 
-  # securityContext to be applied to the daemonset containers
+  # site24x7Agent.securityContext to be applied to the daemonset containers
   securityContext: {}
 
-  # if not securityContext is provided, the appropriate context to be added to the daemonset containers based runAsNonRoot: true/false
+  # site24x7Agent.applyNonRootSecurityContext - if not securityContext is provided, the appropriate context to be added to the daemonset containers based runAsNonRoot: true/false
   applyNonRootSecurityContext: false
 
-  # applying toleration which tolerates any taints
+  # site24x7Agent.applyDefaultToleration - applying toleration which tolerates any taints
   applyDefaultToleration: true
 
   # daemonset container details
@@ -65,15 +59,16 @@ site24x7Agent:
       cpu: 200m
       memory: 512Mi
 
-  # extraEnv to be added to the site24x7-agent container
+  # site24x7Agent.extraEnv - to be added to the site24x7-agent container
   extraEnv: []
 
-  # apply the site24x7-agent priorityClass to the daemonset pods
+  # site24x7Agent.applyPriorityClass - apply the site24x7-agent priorityClass to the daemonset pods
   applyPriorityClass: true
 
-  # site24x7-agent priorityClass value
+  # site24x7Agent.priorityClassValue - site24x7-agent priorityClass value
   priorityClassValue: 12000000
   
+
 site24x7KubeStateMetrics:
   # kube-state-metrics enable/disable
   create: true
@@ -123,6 +118,7 @@ site24x7KubeStateMetrics:
   # site24x7-kube-state-metrics priorityClass value
   priorityClassValue: 12000000
   
+
 site24x7ClusterAgent:
   # kube-state-metrics enable/disable
   create: true
@@ -175,6 +171,7 @@ site24x7ClusterAgent:
   # site24x7-cluster-agent priorityClass value
   priorityClassValue: 12000000
 
+
 serviceAccount:
   create: true
   # Annotations to add to the service account
@@ -182,3 +179,77 @@ serviceAccount:
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: site24x7
+
+
+# site24x7 configMap used to store the settings for agents
+site24x7ConfigMap:
+  create: true
+
+  # Linux agent version for site24x7-agent pods
+  nodeAgentVersion: "2000"
+
+  # Cluster agent version for site24x7-cluster-agent pods
+  clusterAgentVersion: "100"
+
+  # instant discovery settings for site24x7-agent & site24x7-cluster-agent pods
+  oneMin: |
+    {
+      "Pods": "90",
+      "Nodes": "90",
+      "Namespaces": "90",
+      "HorizontalPodAutoscalers": "-1",
+      "DaemonSets": "90",
+      "Deployments": "60",
+      "Endpoints": "-1",
+      "ReplicaSets": "-1",
+      "StatefulSets": "90",
+      "Services": "-1",
+      "PV": "-1",
+      "PersistentVolumeClaims": "-1",
+      "Jobs": "-1",
+      "Ingresses": "-1"
+    }
+
+  # DataCollector tasks settings for site24x7-agent & site24x7-cluster-agent pods
+  settings: |
+    {
+      "kubernetes": "300",
+      "daemonsets": "300",
+      "deployments": "300",
+      "statefulsets": "300",
+      "pods": "300",
+      "nodes": "300",
+      "services": "300",
+      "replicasets": "900",
+      "ingresses": "300",
+      "jobs": "300",
+      "pv": "300",
+      "persistentvolumeclaim": "300",
+      "componentstatuses": "300",
+      "horizontalpodautoscalers": "300",
+      "endpoints": "3600",
+      "namespaces": "300",
+      "eventcollector": "60",
+      "npcdatacollector": "300",
+      "npcdatacollector_discovery": "900",
+      "resourcedependency": "300",
+      "workloadsdatacollector": "300",
+      "workloadsdatacollector_discovery": "900",
+      "clustermetricsaggregator": "300",
+      "sidecarnpccollector": "300",
+      "sidecarnpccollector_discovery": "900",
+      "dcinit": "900",
+      "clusteragent": "1",
+      "ksm": "1",
+      "guidancemetrics": "20600",
+      "termination": "900",
+      "kubelet": "300",
+      "metadata": "20600",
+      "prometheus_integration": "1",
+      "plugin_integration": "1",
+      "database_integration": "1",
+      "ksmprocessor": "1",
+      "kubeletdatapersistence": "1",
+      "servicerelationdataprocessor": "1",
+      "yamlfetcher": "60"
+    }
