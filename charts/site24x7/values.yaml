@@ -74,7 +74,7 @@ site24x7KubeStateMetrics:
   # site24x7KubeStateMetrics.create - enable/disable
   create: true
 
-  # site24x7KubeStateMetrics.  - deployment and pod annotations
+  # site24x7KubeStateMetrics.annotations - deployment and pod annotations
   annotations: {}
 
   # site24x7KubeStateMetrics.updateStrategy - site24x7-kube-state-metrics for deployment (default - rollingUpdate)
