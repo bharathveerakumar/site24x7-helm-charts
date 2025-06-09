@@ -18,16 +18,16 @@ http_proxy: ""
 https_proxy: ""
 
 site24x7Agent:
-  # site24x7Agent.create - enable/disable
+  # site24x7Agent.create - enable/disable the site24x7-agent resources
   create: true
 
-  # site24x7Agent.annotations - daemonset and pod annotations
+  # site24x7Agent.annotations - for site24x7-agent daemonset and its pod annotations
   annotations: {}
 
-  # site24x7Agent.updateStrategy for daemonset
+  # site24x7Agent.updateStrategy - for site24x7-agent daemonset and its pods
   updateStrategy: {}
 
-  # site24x7Agent.nodeSelector for daemonset pods
+  # site24x7Agent.nodeSelector - for site24x7-agent daemonset pods
   nodeSelector: {}
 
   # site24x7Agent.tolerations - list of tolerations to add to the daemonset pods
