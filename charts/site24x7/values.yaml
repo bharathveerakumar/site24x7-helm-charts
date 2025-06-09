@@ -77,10 +77,10 @@ site24x7KubeStateMetrics:
   # site24x7KubeStateMetrics.annotations - deployment and pod annotations
   annotations: {}
 
-  # site24x7KubeStateMetrics.updateStrategy - site24x7-kube-state-metrics for deployment (default - rollingUpdate)
+  # site24x7KubeStateMetrics.updateStrategy - for site24x7-kube-state-metrics deployment (default - rollingUpdate)
   updateStrategy: {}
 
-  # site24x7KubeStateMetrics.nodeSelector - site24x7-kube-state-metrics for deployment pods
+  # site24x7KubeStateMetrics.nodeSelector - for site24x7-kube-state-metrics deployment pods
   nodeSelector: {}
 
   # site24x7KubeStateMetrics.tolerations - list of tolerations to add to the deployment pods
