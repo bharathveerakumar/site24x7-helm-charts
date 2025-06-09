@@ -18,6 +18,7 @@ http_proxy: ""
 https_proxy: ""
 
 site24x7Agent:
+  # site24x7Agent.create - enable/disable
   create: true
 
   # site24x7Agent.annotations - daemonset and pod annotations
@@ -41,7 +42,7 @@ site24x7Agent:
   # site24x7Agent.applyDefaultToleration - applying toleration which tolerates any taints
   applyDefaultToleration: true
 
-  # daemonset container details
+  # site24x7Agent.image - daemonset container details
   image:
     repository: site24x7
     name: docker-agent
@@ -50,7 +51,7 @@ site24x7Agent:
     tag: release2000
     imagePullSecrets: []
 
-  # site24x7-agent container resources
+  # site24x7Agent.resources - site24x7-agent daemonset container resources
   resources:
     requests:
       cpu: 100m
@@ -94,7 +95,7 @@ site24x7KubeStateMetrics:
   # site24x7KubeStateMetrics.applyDefaultToleration - applying toleration which tolerates any taints
   applyDefaultToleration: false
 
-  # deployment container details
+  # site24x7KubeStateMetrics.image - deployment container details
   image:
     repository: registry.k8s.io
     name: kube-state-metrics/kube-state-metrics
