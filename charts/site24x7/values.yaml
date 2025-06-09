@@ -172,13 +172,14 @@ site24x7ClusterAgent:
   # site24x7ClusterAgent.priorityClassValue - site24x7-cluster-agent priorityClass value
   priorityClassValue: 12000000
 
+
 # serviceAccount - service account details used by site24x7-agent & site24x7-cluster-agent
 serviceAccount:
   # serviceAccount.create - enable/disable
   create: true
   # serviceAccount.annotations - to add to the service account
   annotations: {}
-  # The name of the service account to use.
+  # serviceAccount.name - The name of the service account to use.
   name: site24x7
 
 
