@@ -60,7 +60,7 @@ site24x7Agent:
       cpu: 200m
       memory: 512Mi
 
-  # site24x7Agent.extraEnv - to be added to the site24x7-agent container
+  # site24x7Agent.extraEnv - to be added to the site24x7-agent pod container
   extraEnv: []
 
   # site24x7Agent.applyPriorityClass - apply the site24x7-agent priorityClass to the daemonset pods
