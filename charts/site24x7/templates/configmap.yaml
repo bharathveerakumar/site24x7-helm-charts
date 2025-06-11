@@ -9,7 +9,7 @@ data:
   NODE_AGENT_VERSION: "{{ .Values.site24x7ConfigMap.nodeAgentVersion }}"
   CLUSTER_AGENT_VERSION: "{{ .Values.site24x7ConfigMap.clusterAgentVersion }}"
   SETTINGS: |
-    {{- .Values.site24x7ConfigMap.settings | toYaml | nindent 4 }}
+    {{- .Values.site24x7ConfigMap.settings | toJson | nindent 4 }}
   1MIN: |
-    {{- .Values.site24x7ConfigMap.oneMin | toYaml | nindent 4 }}
+    {{- .Values.site24x7ConfigMap.oneMin | toJson | nindent 4 }}
 {{ end }}
