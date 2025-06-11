@@ -74,6 +74,9 @@ spec:
         {{- toYaml .Values.site24x7ClusterAgent.resources | nindent 10 }}
         {{- end }}
         livenessProbe:
+        {{- if .Values.site24x7ClusterAgent.livenessProbe }}
+          {{- toYaml .Values.site24x7ClusterAgent.livenessProbe | nindent 10 }}
+        {{- else }}
           httpGet:
             path: /ca/health_check
             port: 5000
@@ -81,7 +84,11 @@ spec:
           periodSeconds: 20
           failureThreshold: 5
           timeoutSeconds: 15
+        {{- end }}
         readinessProbe:
+        {{- if .Values.site24x7ClusterAgent.readinessProbe }}
+          {{- toYaml .Values.site24x7ClusterAgent.readinessProbe | nindent 10 }}
+        {{- else }}
           httpGet:
             path: /ca/health_check
             port: 5000
@@ -89,6 +96,7 @@ spec:
           periodSeconds: 15
           failureThreshold: 5
           timeoutSeconds: 10
+        {{- end }}
       volumes:
       - configMap:
           name: {{ include "site24x7.fullname" . }}

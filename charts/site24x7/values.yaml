@@ -56,12 +56,8 @@ site24x7Agent:
 
   # site24x7Agent.resources - site24x7-agent daemonset container resources
   resources:
-    requests:
-      cpu: 100m
-      memory: 256Mi
     limits:
-      cpu: 200m
-      memory: 512Mi
+      memory: 1Gi
 
   # site24x7Agent.extraEnv - to be added to the site24x7-agent pod container
   extraEnv: []
@@ -159,12 +155,9 @@ site24x7ClusterAgent:
   
   # site24x7ClusterAgent.resources - container resources
   resources:
-    requests:
-      cpu: 100m
-      memory: 256Mi
     limits:
-      cpu: 500m
-      memory: 800Mi
+      cpu: 600m
+      memory: 1Gi
   
   # site24x7ClusterAgent.extraEnv to be added to the site24x7-agent container
   extraEnv: []
@@ -174,6 +167,12 @@ site24x7ClusterAgent:
 
   # site24x7ClusterAgent.priorityClassValue - site24x7-cluster-agent priorityClass value
   priorityClassValue: 12000000
+
+  # site24x7ClusterAgent.livenessProbe - liveness probe for site24x7-cluster-agent deployment
+  livenessProbe: {}
+
+  # site24x7ClusterAgent.readinessProbe - readiness probe for site24x7-cluster-agent deployment
+  readinessProbe: {}
 
 
 # serviceAccount - service account details used by site24x7-agent & site24x7-cluster-agent
