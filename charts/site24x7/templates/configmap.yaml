@@ -6,8 +6,10 @@ metadata:
   labels:
     {{- include "site24x7.labels" . | nindent 4 }}
 data:
-  NODE_AGENT_VERSION: {{ .Values.site24x7ConfigMap.nodeAgentVersion }}
-  CLUSTER_AGENT_VERSION: {{ .Values.site24x7ConfigMap.clusterAgentVersion }}
-  SETTINGS: {{ .Values.site24x7ConfigMap.settings }}
-  1MIN: {{ .Values.site24x7ConfigMap.oneMin }}
+  NODE_AGENT_VERSION: "{{ .Values.site24x7ConfigMap.nodeAgentVersion }}"
+  CLUSTER_AGENT_VERSION: "{{ .Values.site24x7ConfigMap.clusterAgentVersion }}"
+  SETTINGS: |
+    {{- .Values.site24x7ConfigMap.settings | toYaml | nindent 4 }}
+  1MIN: |
+    {{- .Values.site24x7ConfigMap.oneMin | toYaml | nindent 4 }}
 {{ end }}
