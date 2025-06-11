@@ -120,11 +120,11 @@ spec:
             optional: true
           name: clusterconfig
         {{- end }}
-      {{- with .Values }}
-        {{- if .site24x7Agent.applyNonRootSecurityContext }}
+        {{- if .Values.site24x7Agent.applyNonRootSecurityContext }}
         - emptyDir: {}
           name: {{ include "site24x7Agent.name" . }}
         {{- end }}
+      {{- with .Values }}
         {{- if not (or (and .site24x7Agent.applyNonRootSecurityContext .openShift) .gkeAutoPilot) }}
         - hostPath:
             path: /proc
