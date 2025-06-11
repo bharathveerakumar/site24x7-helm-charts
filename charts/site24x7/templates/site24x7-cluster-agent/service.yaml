@@ -5,6 +5,7 @@ metadata:
   name: {{ include "site24x7ClusterAgent.name" . }}
   labels:
     {{- include "site24x7ClusterAgent.labels" . | nindent 4 }}
+    name: site24x7-cluster-agent
 spec:
   ports:
   - name: http-metrics
