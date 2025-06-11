@@ -11,7 +11,7 @@ deviceKey: "apiKey"
 
 # Cluster distributions
 openShift: false
-gkeAutopilot: false
+gkeAutoPilot: false
 
 # proxy settings for site24x7-agent & site24x7-cluster-agent
 http_proxy: ""
@@ -25,7 +25,10 @@ site24x7Agent:
   annotations: {}
 
   # site24x7Agent.updateStrategy - for site24x7-agent daemonset and its pods
-  updateStrategy: {}
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
 
   # site24x7Agent.nodeSelector - for site24x7-agent daemonset pods
   nodeSelector: {}
@@ -93,7 +96,7 @@ site24x7KubeStateMetrics:
   replicas: 1
 
   # site24x7KubeStateMetrics.applyDefaultToleration - applying toleration which tolerates any taints
-  applyDefaultToleration: false
+  applyDefaultToleration: true
 
   # site24x7KubeStateMetrics.image - deployment container details
   image:

@@ -19,6 +19,9 @@ app.kubernetes.io/version: 2.9.2
 site24x7KubeStateMetrics securityContext
 */}}
 {{- define "site24x7KubeStateMetrics.securityContext" }}
+{{- if .Values.site24x7KubeStateMetrics.securityContext }}
+{{ toYaml .Values.site24x7KubeStateMetrics.securityContext }}
+{{- else }}
 {{- include "site24x7.nonRootScc" . }}
-runAsUser: {{ default 1001010001 .Values.site24x7KubeStateMetrics.runAsUser }}
+{{- end }}
 {{- end }}

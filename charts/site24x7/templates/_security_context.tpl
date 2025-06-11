@@ -14,11 +14,3 @@ runAsUser: 1001010001
 runAsUser: 0
 readOnlyRootFilesystem: false
 {{- end }}
-
-{{- define "site24x7Agent.securityContext" }}
-{{- if .Values.site24x7Agent.applyNonRootSecurityContext }}
-{{- include "site24x7.nonRootScc" . }}
-{{- else }}
-{{- include "site24x7.rootScc" . }}
-{{- end }}
-{{- end }}

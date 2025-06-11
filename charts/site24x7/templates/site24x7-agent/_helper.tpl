@@ -11,6 +11,8 @@ site24x7Agent securityContext
 {{- define "site24x7Agent.securityContext" }}
 {{- if .Values.site24x7Agent.applyNonRootSecurityContext }}
 {{- include "site24x7.nonRootScc" . }}
+{{- else if .Values.site24x7Agent.securityContext }}
+{{ toYaml .Values.site24x7Agent.securityContext }}
 {{- else }}
 {{- include "site24x7.rootScc" . }}
 {{- end }}

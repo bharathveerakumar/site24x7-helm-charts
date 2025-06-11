@@ -18,15 +18,25 @@ spec:
       name: {{ include "site24x7ClusterAgent.name" . }}
     spec:
       serviceAccountName: {{ include "site24x7.fullname" . }}
+      {{- if .Values.site24x7ClusterAgent.image.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml .Values.site24x7ClusterAgent.image.imagePullSecrets | nindent 8 }}
+      {{- end }}
+      tolerations:
+      {{- if .Values.site24x7ClusterAgent.tolerations }}
+        {{- toYaml .Values.site24x7ClusterAgent.tolerations | nindent 8 }}
+      {{- else if .Values.site24x7ClusterAgent.applyDefaultToleration }}
+        - operator: Exists
+      {{- end }}
+      {{- if .Values.site24x7ClusterAgent.applyPriorityClass }}
+      priorityClassName: {{ include "site24x7ClusterAgent.name" . }}
+      {{- end }}
       containers:
       {{- with .Values.site24x7ClusterAgent.image }}
       - image: {{ .repository | default "site24x7" }}/{{ .name | default "docker-agent" }}:{{ .tag | default "cluster_agent_nonroot" }}
         imagePullPolicy: {{ .pullPolicy }}
       {{- end }}
         name: {{ include "site24x7ClusterAgent.name" . }}
-        {{- if .Values.site24x7ClusterAgent.applyPriorityClass }}
-        priorityClassName: {{ include "site24x7ClusterAgent.name" . }}
-        {{- end }}
         env:
           - name: NODE_IP
             valueFrom:

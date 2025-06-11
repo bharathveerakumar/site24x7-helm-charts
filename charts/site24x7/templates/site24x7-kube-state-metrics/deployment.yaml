@@ -17,17 +17,25 @@ spec:
         app: {{ include "site24x7KubeStateMetrics.name" . }}
     spec:
       tolerations:
+      {{- if .Values.site24x7KubeStateMetrics.tolerations }}
         {{- toYaml .Values.site24x7KubeStateMetrics.tolerations | nindent 8 }}
+      {{- else if .Values.site24x7KubeStateMetrics.applyDefaultToleration }}
+        - operator: Exists
+      {{- end }}
       automountServiceAccountToken: true
+      {{- if .Values.site24x7KubeStateMetrics.image.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml .Values.site24x7KubeStateMetrics.image.imagePullSecrets | nindent 8 }}
+      {{- end }}
+      {{- if .Values.site24x7KubeStateMetrics.applyPriorityClass }}
+      priorityClassName: {{ include "site24x7KubeStateMetrics.name" . }}
+      {{- end }}
       containers:
       {{- with .Values.site24x7KubeStateMetrics.image }}
       - image: {{ .repository | default "site24x7" }}/{{ .repository | default "site24x7" }}:{{ .tag }}
         imagePullPolicy: {{ .pullPolicy }}
       {{- end }}
         name: {{ include "site24x7KubeStateMetrics.name" . }}
-        {{- if .Values.site24x7KubeStateMetrics.applyPriorityClass }}
-        priorityClassName: {{ include "site24x7KubeStateMetrics.name" . }}
-        {{- end }}
         livenessProbe:
           httpGet:
             path: /healthz
