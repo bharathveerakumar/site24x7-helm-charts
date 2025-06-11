@@ -32,7 +32,7 @@ spec:
       {{- end }}
       containers:
       {{- with .Values.site24x7KubeStateMetrics.image }}
-      - image: {{ .repository | default "site24x7" }}/{{ .repository | default "site24x7" }}:{{ .tag }}
+      - image: {{ .repository | default "registry.k8s.io" }}/{{ .name | default "kube-state-metrics/kube-state-metrics" }}:{{ .tag }}
         imagePullPolicy: {{ .pullPolicy }}
       {{- end }}
         name: {{ include "site24x7KubeStateMetrics.name" . }}
