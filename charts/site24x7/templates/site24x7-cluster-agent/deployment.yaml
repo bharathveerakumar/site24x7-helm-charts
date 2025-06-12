@@ -5,6 +5,10 @@ metadata:
   name: {{ include "site24x7ClusterAgent.name" . }}
   labels:
     {{- include "site24x7ClusterAgent.labels" . | nindent 4 }}
+  {{- if .Values.site24x7ClusterAgent.annotations }}
+  annotations:
+    {{- toYaml .Values.site24x7ClusterAgent.annotations | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.site24x7ClusterAgent.replicas | default 1 }}
   selector:
@@ -16,6 +20,10 @@ spec:
         {{- include "site24x7ClusterAgent.labels" . | nindent 8 }}
         app: {{ include "site24x7ClusterAgent.name" . }}
       name: {{ include "site24x7ClusterAgent.name" . }}
+      {{- if .Values.site24x7ClusterAgent.annotations }}
+      annotations:
+        {{- toYaml .Values.site24x7ClusterAgent.annotations | nindent 8 }}
+      {{- end }}
     spec:
       serviceAccountName: {{ include "site24x7.fullname" . }}
       {{- if .Values.site24x7ClusterAgent.image.imagePullSecrets }}

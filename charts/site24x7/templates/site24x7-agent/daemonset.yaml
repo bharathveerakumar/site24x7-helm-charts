@@ -5,6 +5,10 @@ metadata:
   name: {{ include "site24x7Agent.name" . }}
   labels:
     {{- include "site24x7Agent.labels" . | nindent 4 }}
+  {{- if .Values.site24x7Agent.annotations }}
+  annotations:
+    {{- toYaml .Values.site24x7Agent.annotations | nindent 4 }}
+  {{- end }}
 spec:
   selector:
     matchLabels:
@@ -20,6 +24,10 @@ spec:
       labels:      
         {{- include "site24x7Agent.labels" . | nindent 8 }}
       name: {{ include "site24x7Agent.name" . }}
+      {{- if .Values.site24x7Agent.annotations }}
+      annotations:
+        {{- toYaml .Values.site24x7Agent.annotations | nindent 8 }}
+      {{- end }}
     spec:
       serviceAccountName: {{ include "site24x7.fullname" . }}          
       nodeSelector:
@@ -60,7 +68,7 @@ spec:
                 name: "{{ include "site24x7Agent.name" . }}"
                 key: KEY
           - name: installer
-            value: kubernetes
+            value: {{ .Values.site24x7Agent.installerName | default "kubernetes" }}
           - name: NODE_IP
             valueFrom:
               fieldRef:

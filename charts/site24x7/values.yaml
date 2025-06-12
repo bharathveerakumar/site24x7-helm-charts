@@ -59,6 +59,9 @@ site24x7Agent:
     limits:
       memory: 1Gi
 
+  # site24x7Agent.installerName - installer name to be used in the site24x7-agent pod's environment variable
+  installerName: "kubernetes"
+
   # site24x7Agent.extraEnv - to be added to the site24x7-agent pod container
   extraEnv: []
 

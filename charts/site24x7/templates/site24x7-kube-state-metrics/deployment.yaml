@@ -5,6 +5,10 @@ metadata:
   labels:
     {{- include "site24x7KubeStateMetrics.labels" . | nindent 4 }}
   name: {{ include "site24x7KubeStateMetrics.name" . }}
+  {{- if .Values.site24x7KubeStateMetrics.annotations }}
+  annotations:
+    {{- toYaml .Values.site24x7KubeStateMetrics.annotations | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.site24x7KubeStateMetrics.replicas }}
   selector:
@@ -15,6 +19,11 @@ spec:
       labels:
         {{- include "site24x7KubeStateMetrics.labels" . | nindent 8 }}
         app: {{ include "site24x7KubeStateMetrics.name" . }}
+      name: {{ include "site24x7KubeStateMetrics.name" . }}
+      {{- if .Values.site24x7KubeStateMetrics.annotations }}
+      annotations:
+        {{- toYaml .Values.site24x7KubeStateMetrics.annotations | nindent 8 }}
+      {{- end }}
     spec:
       tolerations:
       {{- if .Values.site24x7KubeStateMetrics.tolerations }}
