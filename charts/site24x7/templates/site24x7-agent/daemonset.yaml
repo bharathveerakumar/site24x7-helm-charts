@@ -89,6 +89,10 @@ spec:
           - name: GKE_AUTOPILOT
             value: "true"
           {{- end }}
+          {{- if .Values.clusterName }}
+          - name: CLUSTER_NAME
+            value: {{ .Values.clusterName }}
+          {{- end }}
           {{- if and .Values.http_proxy .Values.https_proxy }}
           - name: http_proxy
             value: {{ .Values.http_proxy }}

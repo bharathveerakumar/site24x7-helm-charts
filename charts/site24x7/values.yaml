@@ -9,6 +9,9 @@ fullnameOverride: "site24x7"
 # deviceKey - site24x7 device key
 deviceKey: "apiKey"
 
+# clusterName - name of the cluster to be monitored
+clusterName: ""
+
 # Cluster distributions
 openShift: false
 gkeAutoPilot: false
