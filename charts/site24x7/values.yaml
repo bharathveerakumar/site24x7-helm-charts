@@ -52,9 +52,9 @@ site24x7Agent:
   image:
     repository: site24x7
     name: docker-agent
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     # Overrides the image tag whose default is the chart appVersion.
-    tag: release2000
+    tag: release2004
     imagePullSecrets: []
 
   # site24x7Agent.resources - site24x7-agent daemonset container resources
