@@ -25,6 +25,12 @@ spec:
         {{- toYaml .Values.site24x7ClusterAgent.annotations | nindent 8 }}
       {{- end }}
     spec:
+      nodeSelector:
+        {{- if not (empty .Values.site24x7ClusterAgent.nodeSelector) }}
+        {{- toYaml .Values.site24x7ClusterAgent.nodeSelector | nindent 8 }}
+        {{- else }}
+        kubernetes.io/os: linux
+        {{- end }}
       serviceAccountName: {{ include "site24x7.fullname" . }}
       {{- if .Values.site24x7ClusterAgent.image.imagePullSecrets }}
       imagePullSecrets:
