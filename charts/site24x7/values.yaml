@@ -127,7 +127,7 @@ site24x7KubeStateMetrics:
 
 site24x7ClusterAgent:
   # site24x7ClusterAgent.create - enable/disable
-  create: true
+  create: false
 
   # site24x7ClusterAgent.replicas - no. of replicas for site24x7-cluster-agent deployment
   replicas: 1
