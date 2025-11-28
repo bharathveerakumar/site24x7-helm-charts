@@ -12,8 +12,8 @@ deviceKey: "apiKey"
 # existingSecret - provide the site24x7 deviceKey secret details if already exists
 existingSecret:
   enabled: false
-  secretName: ""
-  secretKey: "KEY"
+  name: ""
+  key: "KEY"
 
 # clusterName - name of the cluster to be monitored
 clusterName: ""
