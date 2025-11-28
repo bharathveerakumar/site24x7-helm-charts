@@ -11,7 +11,7 @@ deviceKey: "apiKey"
 
 # existingSecret - provide the site24x7 deviceKey secret details if already exists
 existingSecret:
-  create: false
+  enabled: false
   secretName: ""
   secretKey: "KEY"
 
