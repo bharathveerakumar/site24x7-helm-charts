@@ -9,6 +9,12 @@ fullnameOverride: "site24x7"
 # deviceKey - site24x7 device key
 deviceKey: "apiKey"
 
+# existingSecret - provide the site24x7 deviceKey secret details if already exists
+existingSecret:
+  create: false
+  secretName: ""
+  secretKey: "KEY"
+
 # clusterName - name of the cluster to be monitored
 clusterName: ""
 
