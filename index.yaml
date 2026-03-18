@@ -3,6 +3,16 @@ entries:
   site24x7:
   - apiVersion: v2
     appVersion: 22.1.00
+    created: "2026-03-18T07:50:18.275692136Z"
+    description: A Helm chart for Kubernetes
+    digest: ed26fce1ad21d024fcf378c0f485f004260987c99748ff45e18618b0ba45642e
+    name: site24x7
+    type: application
+    urls:
+    - site24x7-0.2.9.tgz
+    version: 0.2.9
+  - apiVersion: v2
+    appVersion: 22.1.00
     created: "2026-03-18T07:45:12.672729774Z"
     description: A Helm chart for Kubernetes
     digest: 41260768080cc2ec4a2c13e6d5307d9fa84aa2ed024a191770affbced5c9675a
@@ -191,4 +201,4 @@ entries:
     urls:
     - site24x7-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-18T07:45:12.672869882Z"
+generated: "2026-03-18T07:50:18.275857011Z"
