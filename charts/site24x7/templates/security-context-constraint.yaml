@@ -15,6 +15,9 @@ fsGroup:
 kind: SecurityContextConstraints
 metadata:
   name: {{ include "site24x7.fullname" . }}
+  annotations:
+    # This tells Helm to run this BEFORE the rest of the chart
+    "helm.sh/hook": pre-install,pre-upgrade
 priority: null
 readOnlyRootFilesystem: false
 seccompProfiles:
