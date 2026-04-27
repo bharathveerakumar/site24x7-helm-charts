@@ -32,7 +32,7 @@ seLinuxContext:
 supplementalGroups:
   type: RunAsAny
 users:
-- system:serviceaccount:{{ include "site24x7.serviceAccountName" }}:{{ .Release.Namespace }}
+- system:serviceaccount:{{ include "site24x7.serviceAccountName" . }}:{{ .Release.Namespace }}
 volumes:
 - configMap
 - csi
